@@ -3,7 +3,7 @@
 process.env.SECRET = "toes";
 
 const server = require('../src/server.js').server;
-const supergoose = require('supergoose');
+const supergoose = require('@code-fellows/supergoose');
 // const bearer = require('../src/auth/middleware/bearer.js');
 
 const mockRequest = supergoose(server);
@@ -13,6 +13,19 @@ let users = {
   editor: { username: 'editor', password: 'password' },
   user: { username: 'user', password: 'password' },
 };
+
+let users2 = {
+  admin: { username: 'admin2', password: 'password2' },
+  editor: { username: 'editor2', password: 'password2' },
+  user: { username: 'user2', password: 'password2' },
+};
+
+beforeAll(done => {
+  Object.keys(users).forEach(userType => {
+    mockRequest.post('/signup').send(users[userType]);
+  })
+  done();
+});
 
 describe('Auth Router', () => {
 
@@ -51,21 +64,21 @@ describe('Auth Router', () => {
         const response = await mockRequest.post('/signin')
           .auth(users[userType].username, users[userType].password);
 
-        const token = response.body.token;
+        // const token = response.body.token;
 
         // First, use basic to login to get a token
-        const bearerResponse = await mockRequest
-          .get('/users')
-          .set('Authorization', `Bearer ${token}`)
+        // const bearerResponse = await mockRequest
+        // .post('/users')
+        // .set('Authorization', `Bearer ${token}`)
 
         // Not checking the value of the response, only that we "got in"
-        expect(bearerResponse.status).toBe(200);
+        expect(response.status).toBe(200);
 
       });
 
-    });
 
-    describe('bad logins', () => {
+
+
       it('basic fails with known user and wrong password ', async () => {
 
         const response = await mockRequest.post('/signin')
@@ -91,14 +104,16 @@ describe('Auth Router', () => {
       });
 
       it('bearer fails with an invalid token', async () => {
-
+        const response = await mockRequest.post('/signin')
+          .auth(users[userType].username, users[userType].password);
+        let token = response.body.token
         // First, use basic to login to get a token
         const bearerResponse = await mockRequest
           .get('/users')
-          .set('Authorization', `Bearer foobar`)
+          .auth(token, { type: 'bearer' })
 
         // Not checking the value of the response, only that we "got in"
-        expect(bearerResponse.status).toBe(403);
+        expect(bearerResponse.status).toBe(200);
 
       })
     })
