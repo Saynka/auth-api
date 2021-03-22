@@ -4,11 +4,11 @@ const fs = require('fs');
 const express = require('express');
 const Collection = require('../models/data-collection.js');
 
-const router1 = express.Router();
+const router2 = express.Router();
 
 const models = new Map();
 
-router1.param('model', (req, res, next) => {
+router2.param('model', (req, res, next) => {
   const modelName = req.params.model;
   if (models.has(modelName)) {
     req.model = models.get(modelName);
@@ -27,11 +27,11 @@ router1.param('model', (req, res, next) => {
   }
 });
 
-router1.get('/:model', handleGetAll);
-router1.get('/:model/:id', handleGetOne);
-router1.post('/:model', handleCreate);
-router1.put('/:model/:id', handleUpdate);
-router1.delete('/:model/:id', handleDelete);
+router2.get('/:model', handleGetAll);
+router2.get('/:model/:id', handleGetOne);
+router2.post('/:model', handleCreate);
+router2.put('/:model/:id', handleUpdate);
+router2.delete('/:model/:id', handleDelete);
 
 async function handleGetAll(req, res) {
   let allRecords = await req.model.get();
@@ -64,4 +64,4 @@ async function handleDelete(req, res) {
 }
 
 
-module.exports = router1;
+module.exports = router2;

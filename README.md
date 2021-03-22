@@ -6,8 +6,8 @@
 
 ### Links and Resources
 
-- [ci/cd](https://auth-api-practice.herokuapp.com/)
-- [back-end server url](http://xyz.com)
+- [ci/cd](https://github.com/Saynka/basic-auth/actions)
+- [back-end server url](https://auth-api-practice.herokuapp.com/)
 - [front-end application](http://xyz.com)
 
 ### Setup
@@ -41,10 +41,9 @@ i.e.
 
 #### Tests
 
-- How do you run tests? - npm test
-- Any tests of note? - server, authentication route
-- Describe any tests that you did not complete, skipped, etc
+- npm test
 
 #### UML
 
-![UML Example](./reference/uml-1.png)
+![lab8](./assets/lab8.png)
+![lab7](./assets/lab7.png)
